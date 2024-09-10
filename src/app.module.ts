@@ -1,11 +1,15 @@
-import { join } from "node:path";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { RedisModule } from "@nestjs-modules/ioredis";
-import { FeedbackRepository } from "./repositories/feedback.repository.js";
-import { AcceptLanguageResolver, I18nModule, QueryResolver } from "nestjs-i18n";
+import { FeedbackEntity } from "./entities/feedback.entity.js";
 import { CustomConfigModule } from "./components/modules/config/config.module.js";
 import { CustomConfigService } from "./components/modules/config/config.service.js";
+import { CategoryEntity } from "./entities/category.entity.js";
+import { OrderEntity } from "./entities/order.entity.js";
+import { OrderItemEntity } from "./entities/order-item.entity.js";
+import { ProductEntity } from "./entities/product.entity.js";
+import { VendorEntity } from "./entities/vendor.entity.js";
+import { ApiModule } from "./modules/api/api.module.js";
 
 @Module({
   imports: [
@@ -35,21 +39,30 @@ import { CustomConfigService } from "./components/modules/config/config.service.
           username: configService.MYSQL_USERNAME,
           password: configService.MYSQL_PASSWORD,
           database: configService.MYSQL_DATABASE,
-          entities: [FeedbackRepository],
+          entities: [
+            FeedbackEntity,
+            CategoryEntity,
+            OrderEntity,
+            OrderItemEntity,
+            ProductEntity,
+            VendorEntity,
+          ],
+          synchronize: true,
         };
       },
     }),
-    I18nModule.forRoot({
-      fallbackLanguage: "fa",
-      loaderOptions: {
-        path: join(process.cwd(), "locales"),
-        watch: true,
-      },
-      resolvers: [
-        { use: QueryResolver, options: ["lang"] },
-        AcceptLanguageResolver,
-      ],
-    }),
+    // I18nModule.forRoot({
+    //   fallbackLanguage: "fa",
+    //   loaderOptions: {
+    //     path: join(process.cwd(), "locales"),
+    //     watch: true,
+    //   },
+    //   resolvers: [
+    //     { use: QueryResolver, options: ["lang"] },
+    //     AcceptLanguageResolver,
+    //   ],
+    // }),
+    ApiModule,
   ],
 })
 export class AppModule {}

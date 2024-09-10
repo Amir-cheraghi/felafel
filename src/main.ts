@@ -1,8 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { NestExpressApplication } from "@nestjs/platform-express";
-import { VersioningType } from "@nestjs/common";
+import { ValidationPipe, VersioningType } from "@nestjs/common";
 import helmet from "helmet";
-import { I18nValidationPipe } from "nestjs-i18n";
 import morgan from "morgan";
 import { CustomConfigService } from "./components/modules/config/config.service.js";
 import { AppModule } from "./app.module.js";
@@ -45,7 +44,7 @@ async function bootstrap() {
 
   const configService = app.get(CustomConfigService);
 
-  app.useGlobalPipes(new I18nValidationPipe({ transform: true }));
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   app.useBodyParser("raw");
 
