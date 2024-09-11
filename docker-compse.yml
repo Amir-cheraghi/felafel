@@ -1,0 +1,47 @@
+version: '3.8'
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  my_service:
+    build: .
+    container_name: felafel
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - REDIS_HOST=felafel-redis
+      - REDIS_PORT=6379
+      - REDIS_DB=1
+      - MYSQL_HOST=felafel-mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=8449
+      - MYSQL_DATABASE=felafel
+    depends_on:
+      - felafel-redis
+      - felafel-mysql
+    networks:
+      - app-network
+
+  felafel-redis:
+    image: redis:latest
+    container_name: felafel-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  felafel-mysql:
+    image: mysql:latest
+    container_name: felafel-mysql
+
+    environment:
+      - MYSQL_ROOT_PASSWORD=8449
+      - MYSQL_DATABASE=felafel
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
