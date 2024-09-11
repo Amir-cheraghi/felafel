@@ -27,7 +27,7 @@ export class ProductService {
 
     return {
       ...product,
-      feedbackAVG: productAVGRate,
+      averageRate: productAVGRate,
     };
   }
 }

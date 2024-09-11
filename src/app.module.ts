@@ -10,6 +10,7 @@ import { OrderItemEntity } from "./entities/order-item.entity.js";
 import { ProductEntity } from "./entities/product.entity.js";
 import { VendorEntity } from "./entities/vendor.entity.js";
 import { ApiModule } from "./modules/api/api.module.js";
+import { HealthCheckModule } from "./modules/health-check/health-check.module.js";
 
 @Module({
   imports: [
@@ -51,17 +52,7 @@ import { ApiModule } from "./modules/api/api.module.js";
         };
       },
     }),
-    // I18nModule.forRoot({
-    //   fallbackLanguage: "fa",
-    //   loaderOptions: {
-    //     path: join(process.cwd(), "locales"),
-    //     watch: true,
-    //   },
-    //   resolvers: [
-    //     { use: QueryResolver, options: ["lang"] },
-    //     AcceptLanguageResolver,
-    //   ],
-    // }),
+    HealthCheckModule,
     ApiModule,
   ],
 })
